@@ -9,7 +9,7 @@ file_paths = {
     "헬스장": 'https://raw.githubusercontent.com/cdshadow/facility/main/health.shp',
     "필라테스/요가": 'https://raw.githubusercontent.com/cdshadow/facility/main/philites_yoga.shp',
     "수영장": 'https://raw.githubusercontent.com/cdshadow/facility/main/swim.shp',
-    "댄스학원": 'https://raw.githubusercontent.com/cdshadow/facility/main/dancd_academy.shp',
+    "댄스학원": 'https://raw.githubusercontent.com/cdshadow/facility/main/dance_academy.shp',
 }
 
 # 마커 색상 설정
