@@ -69,6 +69,6 @@ def create_map():
 st.title('대전광역시 체육시설 지도')
 
 # 지도 생성 및 출력
-# st.header('대전광역시 체육시설 지도')
+st.header('대전광역시 체육시설 지도')
 map_display = create_map()
 st_folium(map_display, width=1200, height=700)
