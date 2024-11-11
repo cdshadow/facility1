@@ -66,7 +66,7 @@ def create_map():
     return map_obj
 
 # Streamlit 레이아웃 설정
-st.title('대전광역시 체육시설 지도')
+st.title('대전광역시 체육시설 시각화')
 
 # 지도 생성 및 출력
 st.header('대전광역시 체육시설 지도')
