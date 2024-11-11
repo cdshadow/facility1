@@ -45,7 +45,7 @@ def create_map():
                 for _, row in gdf.iterrows():
                     folium.CircleMarker(
                         location=[row.geometry.y, row.geometry.x],
-                        radius=2,  # 마커 크기 설정 (2/10 크기)
+                        radius=4,  # 마커 크기 설정 (2배로 증가)
                         color=marker_colors.get(name, "gray"),  # 테두리 색상
                         fill=True,  # 내부 채우기 활성화
                         fill_color=marker_colors.get(name, "gray"),  # 내부 색상
