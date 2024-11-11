@@ -1,6 +1,5 @@
 import streamlit as st
 import geopandas as gpd
-import pandas as pd
 import folium
 from streamlit_folium import st_folium
 
@@ -39,17 +38,19 @@ def create_map():
                 gdf = gpd.read_file(path)
                 gdf = gdf.to_crs(epsg=4326)  # 좌표계 변환
 
-                # 각 포인트를 Folium CircleMarker로 추가
+                # FeatureGroup 생성
+                feature_group = folium.FeatureGroup(name=name)
+
+                # 각 포인트를 FeatureGroup에 추가
                 for _, row in gdf.iterrows():
-                    folium.CircleMarker(
+                    folium.Marker(
                         location=[row.geometry.y, row.geometry.x],
-                        radius=3,  # 마커 크기 설정 (기본보다 작게)
-                        color=marker_colors.get(name, "gray"),  # 테두리 색상
-                        fill=True,  # 내부 채우기 활성화
-                        fill_color=marker_colors.get(name, "gray"),  # 내부 색상
-                        fill_opacity=0.7,  # 투명도 설정
                         popup=f"{name}<br>위도: {row.geometry.y}<br>경도: {row.geometry.x}",
-                    ).add_to(map_obj)
+                        icon=folium.Icon(color=marker_colors.get(name, "gray"), icon="info-sign"),
+                    ).add_to(feature_group)
+
+                # FeatureGroup을 지도에 추가
+                feature_group.add_to(map_obj)
             else:
                 st.error(f"지원되지 않는 파일 형식입니다: {path}")
         except Exception as e:
