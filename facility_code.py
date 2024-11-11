@@ -41,12 +41,16 @@ def create_map():
                 # FeatureGroup 생성
                 feature_group = folium.FeatureGroup(name=name)
 
-                # 각 포인트를 FeatureGroup에 추가
+                # 각 포인트를 CircleMarker로 추가
                 for _, row in gdf.iterrows():
-                    folium.Marker(
+                    folium.CircleMarker(
                         location=[row.geometry.y, row.geometry.x],
+                        radius=2,  # 마커 크기 설정 (2/10 크기)
+                        color=marker_colors.get(name, "gray"),  # 테두리 색상
+                        fill=True,  # 내부 채우기 활성화
+                        fill_color=marker_colors.get(name, "gray"),  # 내부 색상
+                        fill_opacity=0.7,  # 투명도 설정
                         popup=f"{name}<br>위도: {row.geometry.y}<br>경도: {row.geometry.x}",
-                        icon=folium.Icon(color=marker_colors.get(name, "gray"), icon="info-sign"),
                     ).add_to(feature_group)
 
                 # FeatureGroup을 지도에 추가
