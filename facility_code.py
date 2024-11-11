@@ -50,7 +50,7 @@ def create_map():
                         fill=True,  # 내부 채우기 활성화
                         fill_color=marker_colors.get(name, "gray"),  # 내부 색상
                         fill_opacity=0.7,  # 투명도 설정
-                        popup=f"{name}",  # 팝업에 상호명만 표시
+                        popup=row.get("상호명", "정보 없음"),  # 상호명 표시
                     ).add_to(feature_group)
 
                 # FeatureGroup을 지도에 추가
