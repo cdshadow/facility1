@@ -45,12 +45,12 @@ def create_map():
                 for _, row in gdf.iterrows():
                     folium.CircleMarker(
                         location=[row.geometry.y, row.geometry.x],
-                        radius=4,  # 마커 크기 설정 (2배로 증가)
+                        radius=6,  # 마커 크기 설정
                         color=marker_colors.get(name, "gray"),  # 테두리 색상
                         fill=True,  # 내부 채우기 활성화
                         fill_color=marker_colors.get(name, "gray"),  # 내부 색상
                         fill_opacity=0.7,  # 투명도 설정
-                        popup=f"{name}<br>위도: {row.geometry.y}<br>경도: {row.geometry.x}",
+                        popup=f"{name}",  # 팝업에 상호명만 표시
                     ).add_to(feature_group)
 
                 # FeatureGroup을 지도에 추가
