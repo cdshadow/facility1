@@ -6,7 +6,18 @@ from streamlit_folium import st_folium
 
 # 데이터 경로
 file_paths = {
-    "수영장": 'https://raw.githubusercontent.com/cdshadow/facility/main/swim.shp',  # Shapefile 경로
+    "헬스장": 'https://raw.githubusercontent.com/cdshadow/facility/main/health.shp',
+    "필라테스/요가": 'https://raw.githubusercontent.com/cdshadow/facility/main/philites_yoga.shp',
+    "수영장": 'https://raw.githubusercontent.com/cdshadow/facility/main/swim.shp',
+    "댄스학원": 'https://raw.githubusercontent.com/cdshadow/facility/main/dancd_academy.shp',
+}
+
+# 마커 색상 설정
+marker_colors = {
+    "헬스장": "red",
+    "필라테스/요가": "green",
+    "수영장": "blue",
+    "댄스학원": "purple",
 }
 
 # Streamlit 설정
@@ -33,19 +44,10 @@ def create_map():
                     folium.Marker(
                         location=[row.geometry.y, row.geometry.x],
                         popup=f"{name}<br>위도: {row.geometry.y}<br>경도: {row.geometry.x}",
-                        icon=folium.Icon(color="blue", icon="info-sign"),
+                        icon=folium.Icon(color=marker_colors.get(name, "gray"), icon="info-sign"),
                     ).add_to(map_obj)
-            elif path.endswith('.csv'):
-                # CSV 파일 처리
-                df = pd.read_csv(path)
-
-                # x, y 좌표 확인 및 Folium 마커 생성
-                for _, row in df.iterrows():
-                    folium.Marker(
-                        location=[row['y'], row['x']],
-                        popup=f"{name}<br>위도: {row['y']}<br>경도: {row['x']}",
-                        icon=folium.Icon(color="green"),
-                    ).add_to(map_obj)
+            else:
+                st.error(f"지원되지 않는 파일 형식입니다: {path}")
         except Exception as e:
             st.error(f"{name} 데이터를 불러오는 중 오류가 발생했습니다: {e}")
 
