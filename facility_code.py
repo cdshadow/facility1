@@ -9,8 +9,6 @@ file_paths = {
     "필라테스/요가": 'https://raw.githubusercontent.com/cdshadow/facility/main/philites_yoga.shp',
     "수영장": 'https://raw.githubusercontent.com/cdshadow/facility/main/swim.shp',
     "댄스학원": 'https://raw.githubusercontent.com/cdshadow/facility/main/dance_academy.shp',
-    "1인 시설": 'https://raw.githubusercontent.com/cdshadow/facility/main/one_person.shp',
-    "대전 경계선": 'https://raw.githubusercontent.com/cdshadow/facility/main/daejeon_line.shp',
 }
 
 # 마커 색상 설정
@@ -19,7 +17,6 @@ marker_colors = {
     "필라테스/요가": "green",
     "수영장": "blue",
     "댄스학원": "purple",
-    "1인 시설": "orange",
 }
 
 # Streamlit 설정
@@ -41,34 +38,23 @@ def create_map():
                 gdf = gpd.read_file(path)
                 gdf = gdf.to_crs(epsg=4326)  # 좌표계 변환
 
-                # 포인트 데이터 처리
-                if gdf.geom_type.iloc[0] == 'Point':
-                    feature_group = folium.FeatureGroup(name=name)
+                # FeatureGroup 생성
+                feature_group = folium.FeatureGroup(name=name)
 
-                    for _, row in gdf.iterrows():
-                        folium.CircleMarker(
-                            location=[row.geometry.y, row.geometry.x],
-                            radius=6,  # 마커 크기 설정
-                            color=marker_colors.get(name, "gray"),  # 테두리 색상
-                            fill=True,  # 내부 채우기 활성화
-                            fill_color=marker_colors.get(name, "gray"),  # 내부 색상
-                            fill_opacity=0.7,  # 투명도 설정
-                            popup=row.get("상호명", "정보 없음"),  # 상호명 표시
-                        ).add_to(feature_group)
+                # 각 포인트를 CircleMarker로 추가
+                for _, row in gdf.iterrows():
+                    folium.CircleMarker(
+                        location=[row.geometry.y, row.geometry.x],
+                        radius=6,  # 마커 크기 설정
+                        color=marker_colors.get(name, "gray"),  # 테두리 색상
+                        fill=True,  # 내부 채우기 활성화
+                        fill_color=marker_colors.get(name, "gray"),  # 내부 색상
+                        fill_opacity=0.7,  # 투명도 설정
+                        popup=row.get("상호명", "정보 없음"),  # 상호명 표시
+                    ).add_to(feature_group)
 
-                    feature_group.add_to(map_obj)
-
-                # 라인 데이터 처리
-                elif gdf.geom_type.iloc[0] == 'LineString' or gdf.geom_type.iloc[0] == 'MultiLineString':
-                    folium.GeoJson(
-                        gdf,
-                        name=name,
-                        style_function=lambda x: {
-                            "color": "black",  # 라인 색상
-                            "weight": 2,  # 라인 두께
-                            "opacity": 0.8,  # 투명도
-                        },
-                    ).add_to(map_obj)
+                # FeatureGroup을 지도에 추가
+                feature_group.add_to(map_obj)
             else:
                 st.error(f"지원되지 않는 파일 형식입니다: {path}")
         except Exception as e:
@@ -83,5 +69,6 @@ def create_map():
 st.title('대전광역시 소규모체육시설 지도')
 
 # 지도 생성 및 출력
+# st.header('대전광역시 소규모체육시설 지도')
 map_display = create_map()
 st_folium(map_display, width=1200, height=700)
